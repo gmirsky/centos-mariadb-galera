@@ -1,0 +1,8 @@
+#!/bin/bash
+cd /tmp/test_db-master/
+/usr/bin/mysql -u root -p{{ mysql_root_password }} < /tmp/test_db-master/employees_partitioned.sql
+#
+{% if remote_root.grant_root_remote_ip %}
+/usr/bin/mysql -u root -p{{ mysql_root_password }} -e "GRANT ALL ON *.* to root@'{{ remote_root.remote_root_ip }}' identified by '{{ mysql_root_password }}'; FLUSH PRIVILEGES;"
+{% endif %}
+#
