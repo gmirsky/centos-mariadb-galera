@@ -1,0 +1,32 @@
+---
+- become: true
+  hosts: cluster_master_node
+  tasks:
+    - name: Include variables
+      include_vars: ../vars/galera_cluster_variables.yml
+    - name: Include encrypted variables
+      include_vars: ../vars/user_passwords.yml
+    - name: make /tmp/test_db-master
+      file:
+        path: /tmp/test_db-master
+        state: directory
+        owner: root
+        group: root
+        mode: 'u=rwx,g=rwx,o=rwx'
+    - name: Copy and unarchive the test database data and structure to server
+      unarchive:
+        src:  ../files/test_db-master.zip
+        dest: /tmp
+        remote_src: no
+        keep_newer: yes
+    - name: copy the script to load the database
+      template:
+        src: ../templates/load_mysql_test_database_sh.j2
+        dest: /tmp/load_mysql_test_database.sh
+        owner: root
+        group: root
+        mode: "u=rwx,g=rwx,o=rw"
+    - name: Load the database with test data
+      command: "/tmp/load_mysql_test_database.sh"
+      args:
+         chdir: "/tmp"

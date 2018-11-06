@@ -1,0 +1,13 @@
+---
+- become: true
+  hosts: cluster_slave_nodes
+  tasks:
+    - name: Include variables
+      include_vars: ../vars/galera_cluster_variables.yml
+    - name: Include encrypted variables
+      include_vars: ../vars/user_passwords.yml
+    - name: Start MySQL/MariaDB
+      service:
+        name: mysql
+        state: started
+        enabled: yes
