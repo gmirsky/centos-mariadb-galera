@@ -5,7 +5,7 @@ service mysqlchk
     disable = no
     flags = REUSE
     socket_type = stream
-    port = 9200           # This port used by xinetd for clustercheck
+    port = 9200         # This port used by xinetd for clustercheck
     wait = no
     user = nobody
     server = /usr/bin/clustercheck
