@@ -1,2 +1,19 @@
 ---
-# tasks file for centos-mariadb-galera
+-
+  import_playbook: ../tasks/update_servers.yml
+  name: "Import playbook 'update_servers'"
+-
+  import_playbook: ../tasks/reboot_server_if_required.yml
+  name: "Import playbook 'reboot_server_if_required'"
+-
+  import_playbook: tasks/galera_cluster_node_setup.yml
+  name: "Import playbook 'galera_cluster_node_setup.yml'"
+-
+  import_playbook: tasks/galera_first_cluster_setup.yml
+  name: "Import playbook 'galera_first_cluster_setup.yml'"
+-
+  import_playbook: tasks/galera_cluster_join.yml
+  name: "Import playbook 'galera_cluster_join.yml'"
+-
+  import_playbook: tasks/galera_cluster_db_load.yml
+  name: "Import playbook 'galera_cluster_db_load.yml'"
