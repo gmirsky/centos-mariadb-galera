@@ -8,22 +8,11 @@
       include_vars: ../vars/user_passwords.yml
     - name: Get cluster node IP addresses
       set_fact:
-        galera_cluster_ips: "gcomm://{{ all_group_ip_addresses | replace('\n', '') | replace(' ', '') }}"
-    #- name: testing
-    #  debug:
-    #    msg: "{{ galera_cluster_ips }}"
+        galera_cluster_ips: "gcomm://{{ groups['cluster_servers'] | map('extract', hostvars, ['ansible_ssh_host']) | join(',') }}"
+    - name: testing...galera_cluster_ips
+      debug:
+        msg: "{{ galera_cluster_ips }}"
     #- meta: end_play
-    - name: Disable IPv6 with sysctl
-      sysctl:
-        name: "{{ item }}"
-        value: 1
-        state: present
-        reload: yes
-      with_items:
-        - net.ipv6.conf.all.disable_ipv6
-        - net.ipv6.conf.default.disable_ipv6
-      when:
-        - (ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux')
     - name: Put SELinux in permissive mode
       selinux:
         policy: targeted
@@ -41,47 +30,15 @@
         - "{{ groups.cluster_servers }}"
         #- "{{ groups.haproxy_servers }}"
         #- "{{ groups.web_servers }}"
-    - name: Install packages needed for debugging and administration
-      yum:
-        pkg: "{{ item }}"
-        update_cache: yes
-        state: latest
-      with_items:
-         - bind-utils
-         - bzip2
-         - cifs-utils
-         - curl
-         - deltarpm
-         - git
-         - iotop
-         - lsof
-         - lzma
-         - lzop
-         - mlocate
-         - mc
-         - nano
-         - nc
-         - net-tools
-         - nfs-utils
-         - nmap
-         - p7zip
-         - rsync
-         - tcpdump
-         - traceroute
-         - unzip
-         - vim
-         - wget
-         - yum-utils
-         - yum-plugin-security
-         - zip
     - name: Install xinetd and socat
       yum:
-        pkg: "{{ item }}"
+        name: "{{ packages }}"
         update_cache: yes
         state: latest
-      with_items:
-         - socat
-         - xinetd
+      vars:
+        packages:
+           - socat
+           - xinetd
     - name: Add MariaDB repository
       yum_repository:
         name: mariadb
@@ -91,10 +48,11 @@
         gpgcheck: yes
     - name: Install MariaDB-Galera-server, MariaDB-client, MYSQL-python and Galera
       yum:
-        pkg: "{{ item }}"
+        name: "{{ packages }}"
         update_cache: yes
         state: latest
-      with_items:
+      vars:
+        packages:
          - MariaDB-Galera-server
          - MariaDB-client
          - galera
@@ -126,13 +84,13 @@
       service:
         name: firewalld
         state: restarted
-    - name: Copy clustercheck script to /usr/bin/
-      copy:
-          src: ../files/clustercheck
-          dest: /usr/bin/clustercheck
-          owner: root
-          group: root
-          mode: u+rx,g-rx,o-rwx
+    # - name: Copy clustercheck script to /usr/bin/
+    #   copy:
+    #       src: ../files/clustercheck
+    #       dest: /usr/bin/clustercheck
+    #       owner: root
+    #       group: root
+    #       mode: u+rx,g-rx,o-rwx
     - name: Copy mysqlchk script to /etc/xinetd.d
       copy:
           src: ../files/mysqlchk
@@ -148,7 +106,7 @@
         regexp: '^wap-wsp\s+9200\/[tu][cd]p'
         replace: '#wap-wsp'
         backup: yes
-    - name: add  Galera Clustercheck 9200 to replace monneted out entries
+    - name: "add Galera Clustercheck 9200 to replace monneted out entries"
       lineinfile:
         path: /etc/services
         regexp: '^#wap-wsp\s+9200\/tcp'

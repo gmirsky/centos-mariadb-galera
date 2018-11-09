@@ -1,7 +1,7 @@
 CentOS-MariaDB-Galera
 =====================
 
-Playbook to configure a CentOS 7 based MariaDB Galera Cluster and load up the database with the MySQL employee test database.
+Playbook to configure a CentOS 7 based MariaDB Galera cluster and load it up with the MySQL employee test database for training purposes.
 
 WORK IN PROGRESS DO NOT USE
 
@@ -9,12 +9,20 @@ WORK IN PROGRESS DO NOT USE
 Requirements
 ------------
 
-See dependencies section for the sample database that must be downloaded.
+See dependencies section for the sample database that must be downloaded from GitHub.
 
 Role Variables
 --------------
 
 A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+
+galera_cluster_name: Name of the MariaDB Galera Cluster.
+galera_cluster_user: Cluster User ID.
+galera_clustercheck_user: Cluster User ID used to check the health of the cluster.
+
+
+
+
 
 Ansible Vault Password is ===>  C0mpl1c@t3
 

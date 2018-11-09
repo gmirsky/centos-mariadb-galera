@@ -1,14 +1,7 @@
 ---
-all_group_ip_addresses: |
-    {% set comma = joiner(",") %}
-    {% for host in groups['cluster_servers'] -%}
-        {{ comma() }} {{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}
-    {%- endfor -%}
-force_reboot: true
 galera_cluster_name: galera_cluster
 galera_cluster_user: sst_user
 galera_clustercheck_user: clustercheckuser
-reboot_seconds: 45
 remote_root:
   grant_root_remote_ip: true
   remote_root_ip: "192.168.1.99"

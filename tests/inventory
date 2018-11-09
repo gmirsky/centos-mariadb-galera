@@ -1,2 +1,10 @@
-localhost
+[cluster_master_node]
+testbed01 ansible_ssh_host=172.16.74.134 ansible_port=22 ansible_default_ipv4=172.16.74.134
 
+[cluster_slave_nodes]
+testbed02 ansible_ssh_host=172.16.74.135 ansible_port=22 ansible_default_ipv4=172.16.74.135
+testbed03 ansible_ssh_host=172.16.74.136 ansible_port=22 ansible_default_ipv4=172.16.74.136
+
+[cluster_servers:children]
+cluster_master_node
+cluster_slave_nodes

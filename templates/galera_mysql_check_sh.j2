@@ -7,46 +7,8 @@
 {%- endfor -%}
 #
 
-# example of how to get the ipaddress of every machine in the webservers group for use in a template
-
-{% for host in groups['haproxy_servers'] %}
-  HOST: {{ host }} IP: {{ hostvars[host]['ansible_all_ipv4_addresses'][0] }}
-{% endfor %}
-
-{% for host in groups['haproxy_servers'] %}
-  HOST: {{ host }} IP: {{ hostvars[host]['ansible_all_ipv4_addresses'][1] }}
-{% endfor %}
 
 
-
-
-{{ hostvars[groups['haproxy_servers'][0]].ansible_default_ipv4 }}
-{{ hostvars[groups['haproxy_servers'][1]].ansible_default_ipv4 }}
-
-
-
-{{ hostvars[groups['databaseserver'][0]].ansible_eth0.ipv4.address }}
-
-If using a template file versus inline in the playbook, I'd do this:
-
-{# set db_head_node = groups['databaseserver'][0] #}
-{{ hostvars[db_head_node].blarg }}
-
-for readability purposes
-
-
-node-01 ansible_ssh_host=192.168.100.101
-node-02 ansible_ssh_host=192.168.100.102
-node-03 ansible_ssh_host=192.168.100.103
-node-04 ansible_ssh_host=192.168.100.104
-node-05 ansible_ssh_host=192.168.100.105
-
-[mainnodes]
-node-[01:04]
-
-{% for host in groups['mainnodes'] %}
-    {{hostvars[host]['ansible_ssh_host']}}
-{% endfor %}
 
 
 

@@ -16,7 +16,7 @@ wsrep_provider=/usr/lib64/galera/libgalera_smm.so
 #wsrep_provider_options="pc.bootstrap=true"
 wsrep_cluster_address="{{ galera_cluster_ips }}"
 wsrep_cluster_name="{{ galera_cluster_name }}"
-wsrep_node_address="{{ ansible_eth0.ipv4.address }}"
+wsrep_node_address="{{ ansible_default_ipv4.address }}"
 wsrep_node_name="{{ ansible_nodename }}"
 wsrep_sst_method=rsync
 wsrep_sst_auth={{ galera_cluster_user }}:{{ galera_cluster_user_password }}

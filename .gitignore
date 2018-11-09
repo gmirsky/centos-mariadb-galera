@@ -7,3 +7,7 @@
 
 # Zip files
 *.zip
+test.sh
+*.retry
+notes.txt
+main.retry
