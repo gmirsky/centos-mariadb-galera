@@ -1,5 +1,5 @@
 # CentOS-MariaDB-Galera
-=====================
+-----------
 
 Playbook to configure a CentOS 7 based MariaDB Galera cluster for training purposes. This playbook will load up the servers in the MariaDB Galera cluster with the MySQL employee test database.
 
@@ -61,8 +61,3 @@ License
 -------
 
 BSD
-
-Author Information
-------------------
-
-Written by Gregory Mirsky.
