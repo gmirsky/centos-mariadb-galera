@@ -1,72 +1,61 @@
-CentOS-MariaDB-Galera
+# CentOS-MariaDB-Galera
 =====================
 
-Playbook to configure a CentOS 7 based MariaDB Galera cluster and load it up with the MySQL employee test database for training purposes.
+Playbook to configure a CentOS 7 based MariaDB Galera cluster for training purposes. This playbook will load up the servers in the MariaDB Galera cluster with the MySQL employee test database.
 
-WORK IN PROGRESS DO NOT USE
-
-
-Requirements
+## Requirements
 ------------
 
 See dependencies section for the sample database that must be downloaded from GitHub.
 
-Role Variables
+## Role Variables
 --------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
 galera_cluster_name: Name of the MariaDB Galera Cluster.
 galera_cluster_user: Cluster User ID.
 galera_clustercheck_user: Cluster User ID used to check the health of the cluster.
 
 
+## Encrypt user_passwords.yml
+-------------------------
 
-
-
-Ansible Vault Password is ===>  C0mpl1c@t3
-
-Please create your own vault file and use a more secure password.
-
-The file user_passwords_original.yml contains the original file unencrypted. Please change the passwords from 'dbpass' to something more secure.
+Please change the passwords in the user_passwords.yml file, then encrypt your user_passwords.yml using the Ansible vault utility. Instructions below.
 
 Use the following command to create your encrypted file.
 
-ansible-vault create user_passwords.yml
+    ansible-vault create user_passwords.yml
 
-Provide passwords when prompted.
+Provide passwords when prompted by the Ansible vault utility.
 
-Once in vi editor mode, hit the 'i' key to go into insert mode. Paste the contents of user_passwords_original.yml in your edited file. Remember! Change the passwords to something more secure!
+The Ansible vault utility will place you into a vi editor dialog. Once in vi editor mode, hit the 'i' key to go into insert mode. Paste the contents of user_passwords_original.yml in your edited file. Remember! Change the passwords to something more secure!
 
 Hit escape to exit insert mode, then type ':wq' (without the quotes) to save the file.
 
-View your file and make sure it is encrypted.
+Now, view your file and make sure it is encrypted. Verify you did things correctly by using the following command to see if you can un-encrypt your file.
 
-Verify you did things correctly by using the following command to see if you can unencrypt your file.
-
-ansible-vault view  user_passwords.yml --ask-vault-pass
+    ansible-vault view  user_passwords.yml --ask-vault-pass
 
 Supply the password you used. You should be able to view your file unencrypted.
 
 
-Dependencies
+## Dependencies
 ------------
 This playbook utilizes the MySQL Employees sample database. The database contains about 300,000 employee records with 2.8 million salary entries. The export data is 167 MB, which is not huge, but large enough to be non-trivial and also the reason it is not included with this repository.
 
 The database is available here:
 
-https://github.com/datacharmer/test_db
+    https://github.com/datacharmer/test_db
 
 Download from GitHub as a zip file and place the test_db-master.zip file in the files directory.
 
-Example Playbook
-----------------
+## Executing the playbook
+---------------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Below is a sample bash script that you can use to run the play book. Remember to update the items in the inventory file to reflect your environment.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+    #!/bin/bash
+    export ANSIBLE_HOST_KEY_CHECKING=False
+    ansible-playbook --inventory-file=../tests/inventory --user myuserid  ../tasks/main.yml
 
 License
 -------
